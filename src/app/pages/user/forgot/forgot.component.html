@@ -1,0 +1,32 @@
+<div class="block">
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="inner">
+        <div class="form">
+          <h4 class="text-uppercase">
+            <strong>Restore Password</strong>
+          </h4>
+          <br />
+          <form nz-form [nzLayout]="'vertical'">
+            <nz-form-item>
+              <nz-form-label nzFor="username">Username</nz-form-label>
+              <nz-form-control>
+                <input nz-input id="username">
+              </nz-form-control>
+            </nz-form-item>
+            <div className="mb-2">
+              <a href routerLink="/user/login" class="utils__link--blue utils__link--underlined">
+                Back to login
+              </a>
+            </div>
+            <div class="form-actions">
+              <button nz-button nzType="primary" routerLink="/" class="width-150 mr-4">
+                Restore Password
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

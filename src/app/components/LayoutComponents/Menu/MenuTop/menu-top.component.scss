@@ -1,0 +1,26 @@
+@import 'src/assets/styles/mixins.scss';
+
+.logo {
+  height: 48px;
+  width: 200px;
+  background: $menuBg-darken;
+  float: left;
+}
+
+.logoContainer {
+  height: 48px;
+  padding: 9px 20px 0 17px;
+  img {
+    height: 28px;
+  }
+}
+
+.icon {
+  margin-top: rem(16);
+  margin-right: rem(7);
+  float: left;
+
+  @media (max-width: $md-max-width) {
+    display: none !important;
+  }
+}

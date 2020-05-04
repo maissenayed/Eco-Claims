@@ -1,0 +1,12 @@
+<div class="item" [class.large]="size === 'large'">
+  <div class="img" *ngIf="img">
+    <img src="{{img}}">
+  </div>
+  <div class="description">
+    <h2 class="name" *ngIf="name">{{name}}</h2>
+    <p class="note" *ngIf="note">{{note}}</p>
+  </div>
+  <div class="actionData" *ngIf="actionTemplate">
+    <ng-template [ngTemplateOutlet]="actionTemplate"></ng-template>
+  </div>
+</div>

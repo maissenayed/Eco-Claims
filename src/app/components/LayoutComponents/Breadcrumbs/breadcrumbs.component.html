@@ -1,0 +1,15 @@
+<div class="breadcrumbs">
+  <div class="path">
+    <a href routerLink="/dashboard/alpha" class="text-muted">Home</a>
+    <ng-container *ngFor="let item of breadcrumbs; let last = last;">
+      <span *ngIf="!last">
+        <span class="arrow text-muted"></span>
+        <span class="text-muted">{{ item.title }}</span>
+      </span>
+      <span *ngIf="last">
+        <span class="arrow"></span>
+        <strong>{{ item.title }}</strong>
+      </span>
+    </ng-container>
+  </div>
+</div>

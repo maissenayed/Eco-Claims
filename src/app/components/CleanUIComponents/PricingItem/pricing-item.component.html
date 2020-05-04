@@ -1,0 +1,21 @@
+<div class="item" [class.extended]="extended" [ngClass]="[type ? type : '']">
+  <div class="header">
+    <div class="price">
+      <span class="currency">{{pricingItemData.currency}}</span>
+      <span class="amount">{{pricingItemData.amount}}</span>
+      <span class="period">{{pricingItemData.period}}</span>
+    </div>
+    <div class="title">{{pricingItemData.title}}</div>
+  </div>
+  <ul class="features">
+    <li *ngFor="let feature of pricingItemData.features">
+      <strong>{{feature.main}}</strong> {{feature.descr}}
+    </li>
+  </ul>
+  <div class="footer">
+    <a href="javascript: void(0);" class="btn" role="button">
+      <i class="icmn-download mr-3" aria-hidden="true"></i>
+      {{pricingItemData.btnText}}
+    </a>
+  </div>
+</div>

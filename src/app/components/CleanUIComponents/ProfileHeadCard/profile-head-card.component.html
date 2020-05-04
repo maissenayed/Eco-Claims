@@ -1,0 +1,17 @@
+<div class="card">
+  <div class="head" [style.backgroundImage]="'url('+ userData.cover +')'">
+    <h2 class="text-white">
+      <strong>{{userData.mind}}</strong>
+    </h2>
+  </div>
+  <div>
+    <div class="left">
+      <cui-avatar [src]="userData.avatar" [size]="90" borderColor="#fff" [bordered]="true"></cui-avatar>
+      <strong class="d-block">{{userData.name}}</strong>
+      <span class="text-muted">{{userData.link}}</span>
+    </div>
+    <div class="right">
+      <p>{{userData.description}}</p>
+    </div>
+  </div>
+</div>

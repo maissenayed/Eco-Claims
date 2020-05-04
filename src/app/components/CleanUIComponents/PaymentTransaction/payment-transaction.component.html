@@ -1,0 +1,10 @@
+<a href="javascript: void(0);" class="paymentTransaction card card--withShadow" [class.income]="income">
+  <div class="icon">
+    <i [ngClass]="[income ? 'lnr lnr-arrow-left' : 'lnr lnr-arrow-right']"></i>
+  </div>
+  <div *ngIf="amount">
+    <span class="amount">{{amount}}</span>
+    <sup class="info" *ngIf="info">{{info}}</sup>
+  </div>
+  <div class="footer" *ngIf="footer">{{footer}}</div>
+</a>

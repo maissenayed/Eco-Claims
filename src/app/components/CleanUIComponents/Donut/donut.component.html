@@ -1,0 +1,10 @@
+<span class="mr-2 text-nowrap">
+  <span
+    class="donut"
+    [ngClass]="[
+      type ? typeClass : ''
+    ]"
+    [ngStyle]="{'border-color': color}"
+  ></span>
+  <span>{{name}}</span>
+</span>

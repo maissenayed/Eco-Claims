@@ -1,0 +1,17 @@
+@import 'src/assets/styles/mixins.scss';
+
+.description {
+  font-size: 12px;
+  margin-bottom: rem(20);
+  color: $text-lighten;
+}
+
+.item {
+  margin-bottom: rem(15);
+}
+
+.itemLabel {
+  position: relative;
+  top: 2px;
+  margin-left: 10px;
+}

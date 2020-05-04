@@ -1,0 +1,108 @@
+<div>
+  <div class="row">
+    <div class="col-md-6">
+      <h4 class="text-black mb-3">
+        <strong>{{data.senderName}}</strong>
+        <br />
+        <br />
+        <img class="mr-2" src={{data.senderLogo}} height="50" alt="Amazon" />
+      </h4>
+      <address>
+        {{data.senderAdress}}
+        <br />
+        <abbr class="mr-2" title="Mail">
+          E-mail:
+        </abbr>
+        {{data.senderEmail}}
+        <br />
+        <abbr class="mr-2" title="Phone">
+          Phone:
+        </abbr>
+        {{data.senderPhone}}
+        <br />
+        <abbr class="mr-2" title="Fax">
+          Fax:
+        </abbr>
+        {{data.senderFax}}
+        <br />
+        <br />
+      </address>
+    </div>
+    <div class="col-md-6 text-right">
+      <h4 class="text-black mb-3">
+        <strong>Invoice Info</strong>
+      </h4>
+      <p>
+        <a class="font-size-20" href="javascript: void(0);">
+          {{data.invoiceNumber}}
+        </a>
+        <br />
+        <span class="font-size-20">{{data.recipientName}}</span>
+      </p>
+      <address>
+        {{data.recipientAdress}}
+        <br />
+        <abbr class="mr-2" title="Phone">
+          P:
+        </abbr>
+        {{data.recipientPhone}}
+        <br />
+      </address>
+      <span>Invoice Date: {{data.invoiceDate}}</span>
+      <br />
+      <span>Due Date: {{data.invoiceDueDate}}</span>
+      <br />
+      <br />
+    </div>
+  </div>
+  <nz-table #basicTable [nzShowPagination]="false" [nzData]="data.invoiceContent">
+    <thead>
+      <tr>
+        <th>Number</th>
+        <th>Description</th>
+        <th>Quantity</th>
+        <th>Unitcost</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of data.invoiceContent">
+        <td>{{item.number}}</td>
+        <td>{{item.description}}</td>
+        <td>{{item.quantity}}</td>
+        <td>{{item.unitcost}}</td>
+        <td>{{item.total}}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+  <div class="text-right clearfix mt-5">
+    <div class="pull-right">
+      <p>
+        Sub - Total amount:
+        <strong>
+          <span> {{data.invoiceAmount}}</span>
+        </strong>
+      </p>
+      <p>
+        VAT:
+        <strong>
+          <span> {{data.invoiceVAT}}</span>
+        </strong>
+      </p>
+      <p>
+        <strong>
+          Grand Total: <span>{{data.invoiceTotal}}</span>
+        </strong>
+      </p>
+      <br />
+    </div>
+  </div>
+  <div class="text-right">
+    <button class="mr-2" nz-button nzType="primary">
+      <i nz-icon type="check-circle-o"></i> Proceed to payment
+    </button>
+    <button nz-button nzType="default">
+      <i nz-icon type="printer"></i> Print
+    </button>
+  </div>
+</div>

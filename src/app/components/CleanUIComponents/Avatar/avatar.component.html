@@ -1,0 +1,10 @@
+<a href="javascript: void(0);"
+   class="avatar"
+   [ngClass]="[
+     size ? sizeClass : '',
+     bordered ? borderedClass : ''
+   ]"
+   [ngStyle]="{'border-color': borderColor}"
+>
+  <img [src]="src">
+</a>

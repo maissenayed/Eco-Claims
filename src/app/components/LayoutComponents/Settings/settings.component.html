@@ -1,0 +1,34 @@
+<nz-drawer [nzClosable]="true" [nzVisible]="isSettingsOpen" nzPlacement="right" nzTitle="Clean UI Settings" (nzOnClose)="close()">
+  <div class="description">
+    This component "Settings" gives possibility to construct custom blocks with any widgets, components and elements
+    inside, like this theme settings
+  </div>
+  <div class="item">
+    <nz-switch [(ngModel)]="isMenuTop" (ngModelChange)="settingChange($event, 'isMenuTop')"></nz-switch>
+    <span class="itemLabel">Menu Top (Horizontal)</span>
+  </div>
+  <div class="item">
+    <nz-switch [(ngModel)]="isMenuCollapsed" (ngModelChange)="settingChange($event, 'isMenuCollapsed')"></nz-switch>
+    <span class="itemLabel">Collapsed Menu</span>
+  </div>
+  <div class="item">
+    <nz-switch [(ngModel)]="isMenuShadow" (ngModelChange)="settingChange($event, 'isMenuShadow')"></nz-switch>
+    <span class="itemLabel">Menu Shadow</span>
+  </div>
+  <div class="item">
+    <nz-switch [(ngModel)]="isLightTheme" (ngModelChange)="settingChange($event, 'isLightTheme')"></nz-switch>
+    <span class="itemLabel">Light Theme</span>
+  </div>
+  <div class="item">
+    <nz-switch [(ngModel)]="isBorderless" (ngModelChange)="settingChange($event, 'isBorderless')"></nz-switch>
+    <span class="itemLabel">Borderless Cards</span>
+  </div>
+  <div class="item">
+    <nz-switch [(ngModel)]="isSquaredBorders" (ngModelChange)="settingChange($event, 'isSquaredBorders')"></nz-switch>
+    <span class="itemLabel">Squared Borders</span>
+  </div>
+  <div class="item">
+    <nz-switch [(ngModel)]="isFixedWidth" (ngModelChange)="settingChange($event, 'isFixedWidth')"></nz-switch>
+    <span class="itemLabel">Fixed Width</span>
+  </div>
+</nz-drawer>

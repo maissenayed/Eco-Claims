@@ -1,0 +1,28 @@
+<div class="productCard">
+  <div class="img">
+    <div class="status" *ngIf="productCardData.productStatus === 'new'">
+      <span class="statusTitle">New</span>
+    </div>
+    <div class="like">
+      <i class="icmn icmn-heart"></i>
+    </div>
+    <a href="javascript: void(0);">
+      <img src="{{productCardData.productImg}}">
+    </a>
+  </div>
+  <div class="title">
+    <a href="javascript: void(0);">{{productCardData.productName}}</a>
+    <div class="price">
+      {{productCardData.productPrice}}
+      <div class="oldPrice">{{productCardData.productOldPrice}}</div>
+    </div>
+  </div>
+  <div class="sizes">
+    <span nzTitle="Size S" nzPlacement="top" nz-tooltip>S</span>
+    <span nzTitle="Size M" nzPlacement="top" nz-tooltip>M</span>
+    <span nzTitle="Size XL" nzPlacement="top" nz-tooltip>XL</span>
+  </div>
+  <div class="descr">
+    {{productCardData.productNote}}
+  </div>
+</div>

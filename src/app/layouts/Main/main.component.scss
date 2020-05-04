@@ -1,0 +1,95 @@
+@import 'src/assets/styles/mixins.scss';
+
+.sider {
+  box-sizing: content-box;
+  transition: all 0.3s !important;
+  ::ng-deep {
+    .ant-layout-sider-children {
+      position: fixed;
+      height: 100%;
+      width: 256px;
+      transition: width 0.3s;
+    }
+  }
+  &.ant-layout-sider-collapsed {
+    ::ng-deep {
+      .ant-layout-sider-children {
+        width: 80px;
+      }
+    }
+  }
+}
+
+.light {
+  background: $white;
+  ::ng-deep {
+    .ant-layout-sider-trigger {
+      color: inherit;
+      background: $gray-border !important;
+    }
+  }
+}
+
+::ng-deep {
+  .ant-layout-sider-trigger {
+    transition: all 0.3s !important;
+  }
+
+  .mobileMenu {
+    .ant-drawer-content,
+    ant-drawer-wrapper-body {
+      overflow: visible !important;
+      pointer-events: all;
+    }
+    .ant-drawer-body {
+      padding: 0 !important;
+      pointer-events: all;
+    }
+  }
+}
+
+.mobileMenu-handler {
+  position: absolute;
+  right: -41px;
+  top: 72px;
+  width: 41px;
+  height: 40px;
+  cursor: pointer;
+  z-index: 0;
+  text-align: center;
+  line-height: 40px;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #001529;
+  border-radius: 0 4px 4px 0;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+
+  .mobileMenu-handlerIcon {
+    width: 14px;
+    height: 2px;
+    background: #fff;
+    position: relative;
+    transition: background 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+
+    &:after,
+    &:before {
+      content: '';
+      display: block;
+      position: absolute;
+      background: #fff;
+      width: 100%;
+      height: 2px;
+      transition: transform 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+    }
+
+    &:before {
+      top: -5px;
+    }
+
+    &:after {
+      top: 5px;
+    }
+  }
+}

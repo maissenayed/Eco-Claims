@@ -1,0 +1,12 @@
+<nz-layout>
+  <nz-content>
+    <div [ngClass]="{'login': true, 'light': backgroundEnabled}" [ngStyle]="{backgroundImage: backgroundEnabled ? 'url(\'assets/images/photos/' + backgroundNumber + '.jpeg\')' : 'none'}">
+      <div class="content">
+        <router-outlet></router-outlet>
+      </div>
+      <div class="footer text-center">
+        <p>&copy; 2019 Eco-Claims All rights reserved.</p>
+      </div>
+    </div>
+  </nz-content>
+</nz-layout>

@@ -1,0 +1,13 @@
+<div class="chartCard card">
+  <div class="chartCardGraph">
+    <x-chartist
+      [data]="chartData"
+      [type]="chartOptions.type"
+      [options]="chartOptions.options"
+      [responsiveOptions]="chartOptions.responsiveOptions"
+      [events]="chartOptions.events">
+    </x-chartist>
+  </div>
+  <div class="chartCardAmount">{{amount}}</div>
+  <div class="chartCardTitle">{{title}}</div>
+</div>

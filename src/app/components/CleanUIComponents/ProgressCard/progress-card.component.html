@@ -1,0 +1,20 @@
+<div class="card">
+  <div class="card-body">
+    <div class="head">
+      <div class="name">
+        <h2 *ngIf="title" class="title">{{title}}</h2>
+        <p *ngIf="note" class="note">{{note}}</p>
+      </div>
+      <div *ngIf="currentValue" class="value text-primary">
+        <span [style.color]="dataColor">{{currentValue}}</span>
+      </div>
+    </div>
+    <div class="progressCard__line">
+      <nz-progress nzType="line" [nzPercent]="percent" [nzShowInfo]="false" [nzStrokeWidth]="8" [nzStrokeColor]="dataColor"></nz-progress>
+    </div>
+    <div class="lineDescr" *ngIf="percent">
+      <span>Change</span>
+      <span>{{percent}}%</span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,72 @@
+<div>
+  <div
+    *ngIf="form === 'stats'"
+    class="infoCard"
+    [ngClass]="[
+      type ? type : ''
+    ]"
+  >
+    <span *ngIf="icon" class="digit">
+      <i class="{{iconClass}}"></i>
+    </span>
+    <div class="desc">
+      <span class="title">{{stats.title}}</span>
+      <p>Total: {{stats.count}}</p>
+    </div>
+  </div>
+  <div
+    *ngIf="form === 'stats-large'"
+    class="infoCard"
+    [ngClass]="[
+      type ? type : ''
+    ]"
+  >
+    <h5 class="text-uppercase mb-3 text-white">{{commerceStats.title}}</h5>
+    <div>
+      <span class="pull-right font-size-36">
+        <strong>{{commerceStats.count}}</strong>
+      </span>
+      <span *ngIf="icon">
+        <i class="{{iconClass}} font-size-36"></i>
+      </span>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+  <div
+    *ngIf="form === 'interactive'"
+    class="infoCard px-3 py-5"
+    [ngClass]="[
+      type ? type : ''
+    ]"
+  >
+    <div
+      *ngIf="icon"
+      class="text-center font-size-30"
+    >
+      <i class="{{iconClass}}"></i>
+    </div>
+    <div class="mt-2 text-center">
+      <div class="mb-2">
+        <p>Lorem Ipsum is simply dummy text of printing the printing and typesetti...</p>
+      </div>
+      <a href="javascript: void(0);" class="btn {{btnTypeClass}}">
+        Information
+      </a>
+    </div>
+  </div>
+  <div
+    *ngIf="form === 'bordered'"
+    class="infoCard bordered"
+    [ngClass]="[
+      type ? type : ''
+    ]"
+  >
+    <span *ngIf="icon" class="digit">
+      <i class="{{iconClass}}"></i>
+    </span>
+    <div class="desc">
+      <span class="title">{{stats.title}}</span>
+      <p>{{stats.descr}}</p>
+    </div>
+  </div>
+</div>

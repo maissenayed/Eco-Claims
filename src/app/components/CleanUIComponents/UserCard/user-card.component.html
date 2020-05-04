@@ -1,0 +1,21 @@
+<div class="userCard px-3 py-5"
+     [ngClass]="[
+      type ? 'typed ' + 'bg-' + type : ''
+    ]"
+>
+  <button class="plusBtn" type="button">Add</button>
+  <cui-avatar [src]="avatarUrl" [bordered]="true" [borderColor]="type ? 'white' : ''" [size]="90"></cui-avatar>
+  <div class="my-3 text-center">
+    <div class="userName font-size-18">{{userName}}</div>
+    <div class="post">{{userPost}}</div>
+  </div>
+  <div class="text-center">
+    <div class="btn-group text-center">
+      <nz-radio-group>
+        <label nz-radio-button nzValue="A">Add</label>
+        <label nz-radio-button nzValue="B">Remove</label>
+      </nz-radio-group>
+    </div>
+  </div>
+</div>
+

@@ -6,7 +6,22 @@
   </div>
   <div class="col-lg-4">
     <div class="row">
-      <div class="card">
+      <div class="card col-lg-12  card--withShadow ">
+       
+        <div class="card-body">
+       <div class="col-xl-12 col-lg-6 col-sm-12">
+        <span class="pull-left font-size-24">
+          <strong>Total Claims: </strong>
+        </span>
+        <span class="pull-right font-size-24">
+          <strong> 100</strong>
+        </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="card col-lg-12">
         <div class="card-header">
           <div class="utils__title">
             <strong>Claims By Month</strong>
@@ -14,7 +29,7 @@
         </div>
         <div class="card-body">
           <x-chartist
-            class="ct-chart height-300"
+            class="ct-chart height-200"
             [data]="monthChartData"
             type="Bar"
             [options]="monthChartOptions"
@@ -22,14 +37,6 @@
           </x-chartist>
         </div>
       </div>
-    </div>
-    <div class="row">
-      <cui-chart-card  
-        [title]="chartCard.title"
-        [amount]="chartCard.amount"
-        [chartOptions]="chartCardGraphOptions"
-        [chartData]="chartCard.chartData"
-      ></cui-chart-card>
     </div>
   </div>
 </div>

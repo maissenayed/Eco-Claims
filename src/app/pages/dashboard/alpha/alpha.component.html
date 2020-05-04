@@ -1,28 +1,35 @@
 <div class="row">
   <div class="col-lg-8">
     <div class="card">
-    <app-map></app-map>
+      <app-map></app-map>
     </div>
   </div>
   <div class="col-lg-4">
-    <div class="card">
-      <div class="card-header">
-        <div class="utils__title">
-          <strong>Month Site Visits Growth, %</strong>
+    <div class="row">
+      <div class="card">
+        <div class="card-header">
+          <div class="utils__title">
+            <strong>Claims By Month</strong>
+          </div>
         </div>
-        <cui-donut type="primary" name="Income"></cui-donut>
-        <cui-donut type="success" name="Outcome"></cui-donut>
-      </div>
-      <div class="card-body">
-        <x-chartist
-          class="ct-chart height-300"
-          [data]="monthChartData"
-          type="Bar"
-          [options]="monthChartOptions"
-        >
-        </x-chartist>
+        <div class="card-body">
+          <x-chartist
+            class="ct-chart height-300"
+            [data]="monthChartData"
+            type="Bar"
+            [options]="monthChartOptions"
+          >
+          </x-chartist>
+        </div>
       </div>
     </div>
+    <div class="row">
+      <cui-chart-card  
+        [title]="chartCard.title"
+        [amount]="chartCard.amount"
+        [chartOptions]="chartCardGraphOptions"
+        [chartData]="chartCard.chartData"
+      ></cui-chart-card>
+    </div>
   </div>
- 
 </div>

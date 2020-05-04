@@ -13,6 +13,7 @@ import 'nvd3'
 import { DashboardAlphaComponent } from 'src/app/pages/dashboard/alpha/alpha.component';
 import { MapComponent } from './map/map.component'
 import { ShapeService } from 'src/app/services/shape.service'
+import { PopUpService } from 'src/app/services/pop-up.service'
 
 
 const COMPONENTS = [
@@ -31,7 +32,7 @@ const COMPONENTS = [
   ],
   declarations: [...COMPONENTS],
   providers: [
-    ShapeService
+    ShapeService,PopUpService
   ],
 })
 export class DashboardModule { }

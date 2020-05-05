@@ -14,6 +14,7 @@ import { DashboardAlphaComponent } from 'src/app/pages/dashboard/alpha/alpha.com
 import { MapComponent } from './map/map.component'
 import { ShapeService } from 'src/app/services/shape.service'
 import { PopUpService } from 'src/app/services/pop-up.service'
+import { ClaimsService } from 'src/app/services/firebaseServices/claims.service'
 
 
 const COMPONENTS = [
@@ -32,7 +33,7 @@ const COMPONENTS = [
   ],
   declarations: [...COMPONENTS],
   providers: [
-    ShapeService,PopUpService
+    ShapeService,PopUpService,ClaimsService
   ],
 })
 export class DashboardModule { }

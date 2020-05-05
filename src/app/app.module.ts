@@ -11,7 +11,7 @@ import { NgProgressRouterModule } from '@ngx-progressbar/router'
 import { NgProgressHttpModule } from '@ngx-progressbar/http'
 import { AngularFireModule } from '@angular/fire'
 import { AngularFireAuthModule } from '@angular/fire/auth'
-import { AngularFirestoreModule, FirestoreSettingsToken } from '@angular/fire/firestore'
+import { AngularFirestoreModule, FirestoreSettingsToken, } from '@angular/fire/firestore'
 
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
@@ -25,6 +25,7 @@ import { reducers, metaReducers } from './store/reducers'
 import { registerLocaleData } from '@angular/common'
 import { default as localeEn } from '@angular/common/locales/en'
 import { NZ_I18N, en_US as localeZorro } from 'ng-zorro-antd'
+import { AngularFireDatabaseModule } from '@angular/fire/database'
 const LOCALE_PROVIDERS = [
   { provide: LOCALE_ID, useValue: 'en' },
   { provide: NZ_I18N, useValue: localeZorro },
@@ -82,6 +83,7 @@ const firebaseConfig = {
      * Firebase Modules
      */
     AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireDatabaseModule,
     AngularFireAuthModule,
     AngularFirestoreModule,
 

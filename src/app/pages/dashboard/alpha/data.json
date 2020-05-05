@@ -30,26 +30,9 @@
         8
       ]
     ]
-  },
+  }
   
-  "chartCardData": 
-    {
-      "title": "Claims",
-      "amount": "100",
-      "chartData": {
-        "series": [
-          [
-            2,
-            11,
-            8,
-            14,
-            18,
-            20,
-            26
-          ]
-        ]
-      }
-    }
+ 
  
  
 }

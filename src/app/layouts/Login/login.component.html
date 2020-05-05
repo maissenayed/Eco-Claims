@@ -1,6 +1,16 @@
 <nz-layout>
   <nz-content>
     <div [ngClass]="{'login': true, 'light': backgroundEnabled}" [ngStyle]="{backgroundImage: backgroundEnabled ? 'url(\'assets/images/photos/' + backgroundNumber + '.jpeg\')' : 'none'}">
+      <header class="header">
+        <a href="javascript: void(0);" class="logo">
+          <img *ngIf="!isMenuCollapsed" src="assets/images/eco-claim-logo.png" alt="" />
+    <img *ngIf="isMenuCollapsed" src="assets/images/eco-claim-logo.png" alt="" />
+        </a>
+        <div class="styleControls">
+          <button nz-button nzType="default" class="mr-3"> Eco-Claims </button>
+        </div>
+      
+      </header>
       <div class="content">
         <router-outlet></router-outlet>
       </div>

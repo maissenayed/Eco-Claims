@@ -46,9 +46,9 @@ export class AuthService {
           this.router.navigate(['dashboard/alpha'])
           this.notification.success(
             'Logged In',
-            'You have successfully logged in to Clean UI Angular Admin Template!',
+            'You have successfully logged in to Eco-Claim Dashboard',
           )
-        } 
+        }
       })
     } catch (error) {
       this.notification.error(error.code, error.message)

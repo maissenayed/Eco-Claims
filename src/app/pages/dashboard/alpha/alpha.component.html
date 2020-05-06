@@ -1,5 +1,17 @@
-<div class="dude">
-  <div class="row custom-row">
+<div class="row">
+  <div class="card">
+  <nz-input-group nzCompact>
+    <nz-select [ngModel]="'Between'">
+      <nz-option [nzLabel]="'Between'" [nzValue]="'Between'"></nz-option>
+      <nz-option [nzLabel]="'Except'" [nzValue]="'Except'"></nz-option>
+    </nz-select>
+    <nz-date-picker></nz-date-picker>
+    <nz-date-picker></nz-date-picker>
+  </nz-input-group>
+</div>
+</div>
+<nz-divider></nz-divider>
+  <div class="row">
     <div class="col-lg-8">
       <div class="card">
         <app-map></app-map>
@@ -40,6 +52,6 @@
       </div>
     </div>
   </div>
-</div>
+
 
 

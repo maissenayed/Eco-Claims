@@ -5,3 +5,46 @@
       <div id="map"></div>
     </div>
   </div>
+<nz-drawer
+  [nzBodyStyle]="{ overflow: 'auto'}"
+  [nzClosable]="false"
+  [nzWidth]="480"
+  [nzVisible]="visible"
+  (nzOnClose)="close()"
+  nzPlacement="right"
+>
+  
+    <div class="row">
+      <div class="card col-lg-12  card--withShadow ">
+        <div class="card-body">
+          <div class="col-xl-12 col-lg-6 col-sm-12">
+            <span class="pull-left font-size-24">
+              <strong>Total Claims: </strong>
+            </span>
+            <span class="pull-right font-size-24">
+              <strong> {{ totalClaims }}</strong>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="card card--withShadow  col-lg-12">
+        <div class="card-header">
+          <div class="utils__title">
+            <strong>Claims By Month</strong>
+          </div>
+        </div>
+        <div class="card-body">
+          <x-chartist
+            class="ct-chart height-200"
+            [data]="monthChartData"
+            type="Bar"
+            [options]="monthChartOptions"
+          >
+          </x-chartist>
+        </div>
+      </div>
+    </div>
+ 
+</nz-drawer>

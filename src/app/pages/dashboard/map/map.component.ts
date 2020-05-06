@@ -3,12 +3,26 @@ import * as L from 'leaflet'
 import { ShapeService } from 'src/app/services/shape.service'
 import { PopUpService } from 'src/app/services/pop-up.service'
 import { ClaimsService } from 'src/app/services/firebaseServices/claims.service'
+import ChartistTooltip from 'chartist-plugin-tooltips-updated'
+const data: any = require('./../alpha/data.json')
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
 })
 export class MapComponent implements OnInit {
+  totalClaims: number
+  chartCard = data.chartCardData
+  chartCardGraphOptions: object
+  monthChartData = data.monthChartData
+  monthChartOptions = {
+    seriesBarDistance: 10,
+    plugins: [
+      ChartistTooltip({
+        appendToBody: true,
+      }),
+    ],
+  }
   private map
   private mauritaniaShape
   private icon = {
@@ -32,6 +46,7 @@ export class MapComponent implements OnInit {
       this.initMap()
       this.shapeService.getShapes().subscribe(shape => {
         this.mauritaniaShape = shape
+        this.totalClaims = this.items.length
         this.initStatesLayer(this.items)
         this.items.map(item => {
           item.payload.val().latitude
@@ -73,6 +88,7 @@ export class MapComponent implements OnInit {
           })
           .bindPopup(
             e => {
+              this.open()
               let claims: Array<any> = []
               items.map(item => {
                 if (item.payload.val().state === e.feature.properties.State) {
@@ -107,5 +123,14 @@ export class MapComponent implements OnInit {
       fillOpacity: 0.8,
       fillColor: '#27496d',
     })
+  }
+  visible = false
+
+  open(): void {
+    this.visible = true
+  }
+
+  close(): void {
+    this.visible = false
   }
 }

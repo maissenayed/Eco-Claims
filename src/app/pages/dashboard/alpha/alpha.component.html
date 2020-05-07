@@ -1,6 +1,6 @@
-<div class="row">
+<div class="row justify-content-md-center">
   <div class="card">
-  <nz-input-group nzCompact>
+  <nz-input-group nzCompact >
     <nz-select [ngModel]="'Between'">
       <nz-option [nzLabel]="'Between'" [nzValue]="'Between'"></nz-option>
       <nz-option [nzLabel]="'Except'" [nzValue]="'Except'"></nz-option>
@@ -22,10 +22,10 @@
         <div class="card col-lg-12  card--withShadow ">
           <div class="card-body">
             <div class="col-xl-12 col-lg-6 col-sm-12">
-              <span class="pull-left font-size-24">
+              <span class="pull-left font-size-16">
                 <strong>Total Claims: </strong>
               </span>
-              <span class="pull-right font-size-24">
+              <span class="pull-right font-size-18">
                 <strong> {{ totalClaims }}</strong>
               </span>
             </div>
@@ -36,7 +36,7 @@
         <div class="card card--withShadow  col-lg-12">
           <div class="card-header">
             <div class="utils__title">
-              <strong>Claims By Month</strong>
+              <strong>Claims By State</strong>
             </div>
           </div>
           <div class="card-body">

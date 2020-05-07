@@ -12,8 +12,8 @@ const data: any = require('./../alpha/data.json')
 })
 export class MapComponent implements OnInit {
   totalClaims: number
+  childrenVisible = false
   chartCard = data.chartCardData
-  chartCardGraphOptions: object
   monthChartData = data.monthChartData
   monthChartOptions = {
     seriesBarDistance: 10,
@@ -23,6 +23,20 @@ export class MapComponent implements OnInit {
       }),
     ],
   }
+  datat = [
+    {
+      title: 'Title 1',
+    },
+    {
+      title: 'Title 2',
+    },
+    {
+      title: 'Title 3',
+    },
+    {
+      title: 'Title 4',
+    },
+  ]
   private map
   private mauritaniaShape
   private icon = {
@@ -30,7 +44,7 @@ export class MapComponent implements OnInit {
       iconSize: [25, 41],
       iconAnchor: [13, 0],
       // specify the path here
-      iconUrl: 'assets/images/marker-icon.png',
+      iconUrl: 'assets/images/eco-claim-logo.png',
       shadowUrl: 'assets/images/marker-shadow.png',
     }),
   }
@@ -53,7 +67,9 @@ export class MapComponent implements OnInit {
           const marker = L.marker(
             [item.payload.val().latitude, item.payload.val().longitude],
             this.icon,
-          ).addTo(this.map)
+          )
+            .on('click', this.markerOnClick)
+            .addTo(this.map)
         })
       })
     })
@@ -71,7 +87,7 @@ export class MapComponent implements OnInit {
 
     tiles.addTo(this.map)
   }
-  private initStatesLayer(items: Array<any>) {
+  private initStatesLayer = (items: Array<any>) => {
     const stateLayer = L.geoJSON(this.mauritaniaShape, {
       style: feature => ({
         weight: 3,
@@ -85,6 +101,7 @@ export class MapComponent implements OnInit {
           .on({
             mouseover: e => this.highlightFeature(e),
             mouseout: e => this.resetFeature(e),
+            click: e => this.layerOnClick(e),
           })
           .bindPopup(
             e => {
@@ -109,7 +126,7 @@ export class MapComponent implements OnInit {
       weight: 5,
       opacity: 0.7,
       color: '#0c7b93',
-      fillOpacity: 1.0,
+      fillOpacity: 0.8,
       fillColor: '#00a8cc',
     })
   }
@@ -132,5 +149,21 @@ export class MapComponent implements OnInit {
 
   close(): void {
     this.visible = false
+  }
+  openChildren(): void {
+    this.childrenVisible = true
+  }
+
+  closeChildren(): void {
+    this.childrenVisible = false
+  }
+  private markerOnClick = e => {
+    let latLngs = [e.target.getLatLng()]
+    let markerBounds = L.latLngBounds(latLngs)
+    this.map.fitBounds(markerBounds)
+  }
+  private layerOnClick = e => {
+    let layerbound = e.target.getBounds()
+    this.map.fitBounds(layerbound)
   }
 }

@@ -9,7 +9,15 @@ import { switchMap, map } from 'rxjs/operators'
 import { Subject } from 'rxjs'
 import { AngularFireModule } from '@angular/fire'
 import { AngularFirestore } from '@angular/fire/firestore'
-const data: any = require('./../alpha/data.json')
+import { Claim } from '../claim.model'
+import {
+  IBarChartOptions,
+  IChartistAnimationOptions,
+  IPieChartOptions,
+  IChartistData,
+} from 'chartist'
+import { claimByMonthType } from '../alpha/type'
+import * as moment from 'moment'
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -17,11 +25,52 @@ const data: any = require('./../alpha/data.json')
 })
 export class MapComponent implements OnInit {
   totalClaims: number
+  totalStatClaims: number
+  stateClaims: Array<Claim> = []
+  stateClaimsWithImg: Array<Claim> = []
   childrenVisible = false
-  chartCard = data.chartCardData
-  monthChartData = data.monthChartData
-  monthChartOptions = {
-    seriesBarDistance: 10,
+  simplePieData: IChartistData = {
+    labels: ['Bananas', 'Apples', 'Grapes'],
+    series: [
+      {
+        value: 20,
+      },
+      {
+        value: 10,
+      },
+      {
+        value: 30,
+      },
+    ],
+  }
+
+  simplePieOptions: IPieChartOptions = {
+    donut: true,
+    donutWidth: 60,
+    donutSolid: true,
+    startAngle: 270,
+    showLabel: true,
+    total: 60,
+  }
+  labels: string[] = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ]
+  claimMonth: claimByMonthType = []
+  monthChartData: IChartistData
+  monthChartOptions: IBarChartOptions = {
+    seriesBarDistance: 100,
+    horizontalBars: true,
     plugins: [
       ChartistTooltip({
         appendToBody: true,
@@ -49,7 +98,7 @@ export class MapComponent implements OnInit {
   ) {}
   private destroyed$ = new Subject()
   public imgSrc: any // Change imgSrc type
-  items: Array<any> = []
+  claims: Array<any> = []
   ngOnInit() {
     this.claimService
       .getClaims()
@@ -60,25 +109,17 @@ export class MapComponent implements OnInit {
       )
       .subscribe(results => {
         this.initMap()
-        this.items = results.claims
-        this.totalClaims = this.items.length
+        //reduce firebase paylod to just the objects
+        this.claims = results.claims.reduce((currentArry, elementOfTheArry, Index) => {
+          currentArry.push(elementOfTheArry.payload.val())
+          return currentArry // *********  Important ******
+        }, [])
+        this.totalClaims = this.claims.length
         this.mauritaniaShape = results.shapes
-        this.initStatesLayer(this.items)
-        this.items.map(item => {
-          var storage = this.afs.firestore.app.storage()
-          var storageRef = storage
-            .refFromURL(item.payload.val().picture)
-            .getDownloadURL()
-            .then(function(url) {
-              // Insert url into an <img> tag to "download"
-              console.log('ok', url)
-            })
-            .catch(function(error) {
-              console.log(error)
-            })
-          console.log(storageRef)
+        this.initStatesLayer(this.claims)
 
-          L.marker([item.payload.val().latitude, item.payload.val().longitude], this.icon)
+        this.claims.map(item => {
+          L.marker([item.latitude, item.longitude], this.icon)
             .on('click', this.markerOnClick)
             .addTo(this.map)
         })
@@ -97,7 +138,7 @@ export class MapComponent implements OnInit {
 
     tiles.addTo(this.map)
   }
-  private initStatesLayer = (items: Array<any>) => {
+  private initStatesLayer = (claims: Array<any>) => {
     const stateLayer = L.geoJSON(this.mauritaniaShape, {
       style: feature => ({
         weight: 3,
@@ -115,14 +156,33 @@ export class MapComponent implements OnInit {
           })
           .bindPopup(
             e => {
-              this.open()
-              let claims: Array<any> = []
-              items.map(item => {
-                if (item.payload.val().state === e.feature.properties.State) {
-                  claims.push(item.payload.val())
+              this.stateClaims = []
+              this.monthChartData = []
+              this.stateClaimsWithImg = []
+              this.claimMonth = []
+              this.labels.forEach(e => this.claimMonth.push({ meta: e, value: 0 }))
+              const posts = claims.map(async item => {
+                if (item.state === e.feature.properties.State) {
+                  this.claimMonth[moment.unix(item.id).month()].value += 1
+                  this.stateClaims.push(item)
+                  await this.afs.firestore.app
+                    .storage()
+                    .refFromURL(item.picture)
+                    .getDownloadURL()
+                    .then(url => {
+                      item.picture = url
+                      this.stateClaimsWithImg.push(item)
+                    })
+                    .catch(function(error) {
+                      console.log(error)
+                    })
                 }
               })
-              return this.popupService.makeCapitalPopup(e.feature.properties, claims)
+              this.monthChartData = { labels: this.labels, series: [this.claimMonth] }
+              this.totalStatClaims = this.stateClaims.length
+              this.openStateStat()
+              Promise.all(posts).then(res => console.log(`We have posts: ${res}!`))
+              return this.popupService.makeCapitalPopup(e.feature.properties, this.stateClaims)
             },
             { maxWidth: '500', minWidth: '200' },
           ),
@@ -153,20 +213,6 @@ export class MapComponent implements OnInit {
   }
   visible = false
 
-  private open(): void {
-    this.visible = true
-  }
-
-  private close(): void {
-    this.visible = false
-  }
-  private openChildren(): void {
-    this.childrenVisible = true
-  }
-
-  private closeChildren(): void {
-    this.childrenVisible = false
-  }
   private markerOnClick = e => {
     let latLngs = [e.target.getLatLng()]
     let markerBounds = L.latLngBounds(latLngs)
@@ -176,6 +222,26 @@ export class MapComponent implements OnInit {
     let layerbound = e.target.getBounds()
     this.map.fitBounds(layerbound)
   }
+
+  //Model functions
+
+  private openStateStat(): void {
+    this.visible = true
+  }
+
+  private closeStateStat(): void {
+    this.visible = false
+  }
+  private openClaimStat(): void {
+    this.childrenVisible = true
+  }
+
+  private closeClaimStat(): void {
+    this.childrenVisible = false
+  }
+
+  //to destroy subscriptions and prevent memory leak
+
   ngOnDestroy() {
     this.destroyed$.next()
     this.destroyed$.complete()

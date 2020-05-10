@@ -9,18 +9,18 @@
   [nzClosable]="false"
   [nzWidth]="500"
   [nzVisible]="visible"
-  (nzOnClose)="close()"
+  (nzOnClose)="closeStateStat()"
   nzPlacement="right"
 >
   <div class="row">
-    <div class="card col-lg-12  card--withShadow " (click)="openChildren()">
+    <div class="card col-lg-12  card--withShadow " (click)="openClaimStat()">
       <div class="card-body">
         <div class="col-xl-12 col-lg-6 col-sm-12">
           <span class="pull-left font-size-24">
             <strong>State Claims: </strong>
           </span>
           <span class="pull-right font-size-24">
-            <strong> {{ totalClaims }}</strong>
+            <strong> {{ totalStatClaims }}</strong>
           </span>
         </div>
       </div>
@@ -35,7 +35,7 @@
       </div>
       <div class="card-body">
         <x-chartist
-          class="ct-chart height-100"
+          class="ct-chart height-200"
           [data]="monthChartData"
           type="Bar"
           [options]="monthChartOptions"
@@ -48,48 +48,41 @@
     <div class="card card--withShadow  col-lg-12">
       <div class="card-header">
         <div class="utils__title">
-          <strong>Claims By State</strong>
+          <strong>Claims By Status</strong>
         </div>
       </div>
       <div class="card-body">
         <x-chartist
-          class="ct-chart height-100"
-          [data]="monthChartData"
-          type="Bar"
-          [options]="monthChartOptions"
-        >
-        </x-chartist>
+        type="Pie"
+        [data]="simplePieData"
+        [options]="simplePieOptions"
+        class="height-300"
+      >
+      </x-chartist>
       </div>
     </div>
   </div>
+
+  <!-- second drawer for claims -->
   <nz-drawer
     [nzClosable]="false"
     [nzVisible]="childrenVisible"
     nzTitle="Claim details"
-    (nzOnClose)="closeChildren()"
+    (nzOnClose)="closeClaimStat()"
     [nzWidth]="400"
   >
     <nz-list nzItemLayout="vertical">
-        <div *ngFor="let item of datat">
-          <nz-divider></nz-divider>
+        <div *ngFor="let item of stateClaimsWithImg">
           <nz-card  [nzCover]="coverTemplate"  [nzHoverable]="true" [nzActions]="[actionSetting, actionEdit, actionEllipsis]">
-            <nz-card-meta nzTitle="Card title" nzDescription="This is the description" [nzAvatar]="avatarTemplate"></nz-card-meta>
+            <nz-card-meta nzTitle={{item.id}}  nzDescription={{item.tags}}  [nzAvatar]="avatarTemplate"></nz-card-meta>
           </nz-card>
           <ng-template #avatarTemplate>
             <nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
           </ng-template>
           <ng-template #coverTemplate>
-            <img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />
+            <img alt="example" src={{item.picture}} />
           </ng-template>
-          <ng-template #actionSetting>
-            <i nz-icon nzType="setting"></i>
-          </ng-template>
-          <ng-template #actionEdit>
-            <i nz-icon nzType="edit"></i>
-          </ng-template>
-          <ng-template #actionEllipsis>
-            <i nz-icon nzType="ellipsis"></i>
-          </ng-template>
+          <nz-divider></nz-divider>
         </div>
     </nz-list>
   </nz-drawer>

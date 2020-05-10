@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core'
+import { Claim } from '../pages/dashboard/claim.model'
 
 @Injectable({
   providedIn: 'root',
@@ -7,6 +8,7 @@ export class PopUpService {
   constructor() {}
 
   makeCapitalPopup(State: any, claims: any): string {
+    console.log(claims)
     let claimsString = ''
 
     claims.map(claim => {
@@ -18,7 +20,7 @@ export class PopUpService {
     </div>
   </div>`
     })
-    if (claims === undefined || claims.length == 0) {
+    if (claims === undefined || claims.length === 0) {
       claimsString = ' There is no claims for the moment'
     }
 

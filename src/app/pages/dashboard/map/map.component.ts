@@ -1,11 +1,14 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core'
 import * as L from 'leaflet'
+import { AngularFireStorage } from '@angular/fire/storage'
 import { ShapeService } from 'src/app/services/shape.service'
 import { PopUpService } from 'src/app/services/pop-up.service'
 import { ClaimsService } from 'src/app/services/firebaseServices/claims.service'
 import ChartistTooltip from 'chartist-plugin-tooltips-updated'
 import { switchMap, map } from 'rxjs/operators'
 import { Subject } from 'rxjs'
+import { AngularFireModule } from '@angular/fire'
+import { AngularFirestore } from '@angular/fire/firestore'
 const data: any = require('./../alpha/data.json')
 @Component({
   selector: 'app-map',
@@ -41,8 +44,11 @@ export class MapComponent implements OnInit {
     private shapeService: ShapeService,
     private popupService: PopUpService,
     public claimService: ClaimsService,
+    private st: AngularFireStorage,
+    public afs: AngularFirestore,
   ) {}
   private destroyed$ = new Subject()
+  public imgSrc: any // Change imgSrc type
   items: Array<any> = []
   ngOnInit() {
     this.claimService
@@ -59,6 +65,19 @@ export class MapComponent implements OnInit {
         this.mauritaniaShape = results.shapes
         this.initStatesLayer(this.items)
         this.items.map(item => {
+          var storage = this.afs.firestore.app.storage()
+          var storageRef = storage
+            .refFromURL(item.payload.val().picture)
+            .getDownloadURL()
+            .then(function(url) {
+              // Insert url into an <img> tag to "download"
+              console.log('ok', url)
+            })
+            .catch(function(error) {
+              console.log(error)
+            })
+          console.log(storageRef)
+
           L.marker([item.payload.val().latitude, item.payload.val().longitude], this.icon)
             .on('click', this.markerOnClick)
             .addTo(this.map)

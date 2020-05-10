@@ -10,17 +10,15 @@ import 'd3'
 import 'nvd3'
 
 // dashboard
-import { DashboardAlphaComponent } from 'src/app/pages/dashboard/alpha/alpha.component';
+import { DashboardAlphaComponent } from 'src/app/pages/dashboard/alpha/alpha.component'
 import { MapComponent } from './map/map.component'
 import { ShapeService } from 'src/app/services/shape.service'
 import { PopUpService } from 'src/app/services/pop-up.service'
 import { ClaimsService } from 'src/app/services/firebaseServices/claims.service'
+import { AngularFirestore } from '@angular/fire/firestore'
+import { AngularFireStorage } from '@angular/fire/storage'
 
-
-const COMPONENTS = [
-  DashboardAlphaComponent,
-  MapComponent
-]
+const COMPONENTS = [DashboardAlphaComponent, MapComponent]
 
 @NgModule({
   imports: [
@@ -32,8 +30,6 @@ const COMPONENTS = [
     FormsModule,
   ],
   declarations: [...COMPONENTS],
-  providers: [
-    ShapeService,PopUpService,ClaimsService
-  ],
+  providers: [ShapeService, PopUpService, ClaimsService, AngularFireStorage],
 })
-export class DashboardModule { }
+export class DashboardModule {}

@@ -16,18 +16,18 @@
     ],
     "series": [
       [
-        5,
-        4,
-        3,
-        7,
-        5,
-        10,
-        3,
-        4,
-        8,
-        10,
-        6,
-        8
+        {"meta": "Jan", "value": 1}, 
+        {"meta": "Feb", "value": 1},
+        {"meta": "Mar", "value": 1},
+        {"meta": "Apr", "value": 1},
+        {"meta": "May", "value": 1},
+        {"meta": "Jun", "value": 1},
+        {"meta": "Jul", "value": 1},
+        {"meta": "Aug", "value": 1},
+        {"meta": "Sep", "value": 1},
+        {"meta": "Oct", "value": 1},
+        {"meta": "Nov", "value": 1},
+        {"meta": "Dec", "value": 1}
       ]
     ]
   }

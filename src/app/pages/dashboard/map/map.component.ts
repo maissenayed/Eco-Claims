@@ -4,6 +4,8 @@ import { ShapeService } from 'src/app/services/shape.service'
 import { PopUpService } from 'src/app/services/pop-up.service'
 import { ClaimsService } from 'src/app/services/firebaseServices/claims.service'
 import ChartistTooltip from 'chartist-plugin-tooltips-updated'
+import { switchMap, map } from 'rxjs/operators'
+import { Subject } from 'rxjs'
 const data: any = require('./../alpha/data.json')
 @Component({
   selector: 'app-map',
@@ -23,20 +25,7 @@ export class MapComponent implements OnInit {
       }),
     ],
   }
-  datat = [
-    {
-      title: 'Title 1',
-    },
-    {
-      title: 'Title 2',
-    },
-    {
-      title: 'Title 3',
-    },
-    {
-      title: 'Title 4',
-    },
-  ]
+
   private map
   private mauritaniaShape
   private icon = {
@@ -53,26 +42,28 @@ export class MapComponent implements OnInit {
     private popupService: PopUpService,
     public claimService: ClaimsService,
   ) {}
+  private destroyed$ = new Subject()
   items: Array<any> = []
   ngOnInit() {
-    this.claimService.getClaims().subscribe(result => {
-      this.items = result
-      this.initMap()
-      this.shapeService.getShapes().subscribe(shape => {
-        this.mauritaniaShape = shape
+    this.claimService
+      .getClaims()
+      .pipe(
+        switchMap(claims =>
+          this.shapeService.getShapes().pipe(map(shapes => ({ claims, shapes }))),
+        ),
+      )
+      .subscribe(results => {
+        this.initMap()
+        this.items = results.claims
         this.totalClaims = this.items.length
+        this.mauritaniaShape = results.shapes
         this.initStatesLayer(this.items)
         this.items.map(item => {
-          item.payload.val().latitude
-          const marker = L.marker(
-            [item.payload.val().latitude, item.payload.val().longitude],
-            this.icon,
-          )
+          L.marker([item.payload.val().latitude, item.payload.val().longitude], this.icon)
             .on('click', this.markerOnClick)
             .addTo(this.map)
         })
       })
-    })
   }
 
   private initMap(): void {
@@ -143,18 +134,18 @@ export class MapComponent implements OnInit {
   }
   visible = false
 
-  open(): void {
+  private open(): void {
     this.visible = true
   }
 
-  close(): void {
+  private close(): void {
     this.visible = false
   }
-  openChildren(): void {
+  private openChildren(): void {
     this.childrenVisible = true
   }
 
-  closeChildren(): void {
+  private closeChildren(): void {
     this.childrenVisible = false
   }
   private markerOnClick = e => {
@@ -165,5 +156,9 @@ export class MapComponent implements OnInit {
   private layerOnClick = e => {
     let layerbound = e.target.getBounds()
     this.map.fitBounds(layerbound)
+  }
+  ngOnDestroy() {
+    this.destroyed$.next()
+    this.destroyed$.complete()
   }
 }

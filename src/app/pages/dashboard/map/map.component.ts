@@ -30,16 +30,13 @@ export class MapComponent implements OnInit {
   stateClaimsWithImg: Array<Claim> = []
   childrenVisible = false
   simplePieData: IChartistData = {
-    labels: ['Bananas', 'Apples', 'Grapes'],
+    labels: ['Fixed', 'pending'],
     series: [
       {
-        value: 20,
+        value: 3,
       },
       {
-        value: 10,
-      },
-      {
-        value: 30,
+        value: 2,
       },
     ],
   }
@@ -50,7 +47,7 @@ export class MapComponent implements OnInit {
     donutSolid: true,
     startAngle: 270,
     showLabel: true,
-    total: 60,
+    total: 10,
   }
   labels: string[] = [
     'Jan',

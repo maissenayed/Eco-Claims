@@ -4,6 +4,7 @@ import { SharedModule } from 'src/app/shared.module'
 import { DashboardRouterModule } from './dashboard-routing.module'
 import { CleanUIModule } from 'src/app/components/CleanUIComponents/cleanui.module'
 import { ChartistModule } from 'ng-chartist'
+import { NgApexchartsModule } from 'ng-apexcharts'
 import { NvD3Module } from 'ng2-nvd3'
 
 import 'd3'
@@ -28,6 +29,7 @@ const COMPONENTS = [DashboardAlphaComponent, MapComponent]
     ChartistModule,
     NvD3Module,
     FormsModule,
+    NgApexchartsModule,
   ],
   declarations: [...COMPONENTS],
   providers: [ShapeService, PopUpService, ClaimsService, AngularFireStorage],

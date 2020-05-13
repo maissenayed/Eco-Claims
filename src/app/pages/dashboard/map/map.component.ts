@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core'
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core'
 import * as L from 'leaflet'
 import { AngularFireStorage } from '@angular/fire/storage'
 import { ShapeService } from 'src/app/services/shape.service'
@@ -7,7 +7,6 @@ import { ClaimsService } from 'src/app/services/firebaseServices/claims.service'
 import ChartistTooltip from 'chartist-plugin-tooltips-updated'
 import { switchMap, map } from 'rxjs/operators'
 import { Subject } from 'rxjs'
-import { AngularFireModule } from '@angular/fire'
 import { AngularFirestore } from '@angular/fire/firestore'
 import { Claim } from '../claim.model'
 import {
@@ -16,40 +15,63 @@ import {
   IPieChartOptions,
   IChartistData,
 } from 'chartist'
-import { claimByMonthType } from '../alpha/type'
+
+import { claimByMonthType, claimByStatusType } from '../alpha/type'
 import * as moment from 'moment'
+import {
+  ChartComponent,
+  ApexAxisChartSeries,
+  ApexChart,
+  ApexXAxis,
+  ApexTitleSubtitle,
+} from 'ng-apexcharts'
+
+export type ChartOptions = {
+  series: ApexAxisChartSeries
+  chart: ApexChart
+  xaxis: ApexXAxis
+  title: ApexTitleSubtitle
+}
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
 })
 export class MapComponent implements OnInit {
+  @ViewChild('chart', { static: false }) chart: ChartComponent
+  public chartOptions = {
+    series: [0],
+    labels: ['pending', 'Fixed'],
+    chart: {
+      height: 400,
+      type: 'radialBar',
+    },
+    plotOptions: {
+      radialBar: {
+        startAngle: -90,
+        endAngle: 90,
+        dataLabels: {
+          name: {
+            show: true,
+          },
+          value: {
+            show: true,
+            fontSize: '14px',
+            fontFamily: undefined,
+            color: undefined,
+            formatter: function(val) {
+              return val + '%'
+            },
+          },
+        },
+      },
+    },
+  }
   totalClaims: number
   totalStatClaims: number
   stateClaims: Array<Claim> = []
-  stateClaimsWithImg: Array<Claim> = []
   childrenVisible = false
-  simplePieData: IChartistData = {
-    labels: ['Fixed', 'pending'],
-    series: [
-      {
-        value: 3,
-      },
-      {
-        value: 2,
-      },
-    ],
-  }
-
-  simplePieOptions: IPieChartOptions = {
-    donut: true,
-    donutWidth: 60,
-    donutSolid: true,
-    startAngle: 270,
-    showLabel: true,
-    total: 10,
-  }
-  labels: string[] = [
+  monthChartLabels: string[] = [
     'Jan',
     'Feb',
     'Mar',
@@ -90,7 +112,6 @@ export class MapComponent implements OnInit {
     private shapeService: ShapeService,
     private popupService: PopUpService,
     public claimService: ClaimsService,
-    private st: AngularFireStorage,
     public afs: AngularFirestore,
   ) {}
   private destroyed$ = new Subject()
@@ -153,33 +174,38 @@ export class MapComponent implements OnInit {
           })
           .bindPopup(
             e => {
+              //reset state arrays
               this.stateClaims = []
               this.monthChartData = []
-              this.stateClaimsWithImg = []
-              this.claimMonth = []
-              this.labels.forEach(e => this.claimMonth.push({ meta: e, value: 0 }))
-              const posts = claims.map(async item => {
+              let pending = 0
+              let complete = 0
+              let claimMonth: claimByMonthType = []
+              let popUpClaims = []
+              this.monthChartLabels.forEach(e => claimMonth.push({ meta: e, value: 0 }))
+
+              claims.map(item => {
                 if (item.state === e.feature.properties.State) {
-                  this.claimMonth[moment.unix(item.id).month()].value += 1
-                  this.stateClaims.push(item)
-                  await this.afs.firestore.app
-                    .storage()
-                    .refFromURL(item.picture)
-                    .getDownloadURL()
-                    .then(url => {
-                      item.picture = url
-                      this.stateClaimsWithImg.push(item)
-                    })
-                    .catch(function(error) {
-                      console.log(error)
-                    })
+                  claimMonth[moment.unix(item.id).month()].value += 1
+                  if (!item.status) pending += 1
+                  if (item.status) complete += 1
+                  item.id = moment.unix(item.id).format('L')
+                  popUpClaims.push(item)
                 }
               })
-              this.monthChartData = { labels: this.labels, series: [this.claimMonth] }
-              this.totalStatClaims = this.stateClaims.length
-              this.openStateStat()
-              Promise.all(posts).then(res => console.log(`We have posts: ${res}!`))
-              return this.popupService.makeCapitalPopup(e.feature.properties, this.stateClaims)
+              const posts = claims.map(async item => {
+                if (item.state === e.feature.properties.State) {
+                  item.picture = await this.getClaimImage(item.picture)
+                  this.stateClaims.push(item)
+                }
+              })
+
+              Promise.all(posts).then(() => {
+                this.monthChartData = { labels: this.monthChartLabels, series: [claimMonth] }
+                this.totalStatClaims = this.stateClaims.length
+                this.chartOptions.series = [this.valueToPercent(pending, pending + complete)]
+                this.openStateStat()
+              })
+              return this.popupService.makeCapitalPopup(e.feature.properties, popUpClaims)
             },
             { maxWidth: '500', minWidth: '200' },
           ),
@@ -220,6 +246,10 @@ export class MapComponent implements OnInit {
     this.map.fitBounds(layerbound)
   }
 
+  valueToPercent = (value, total) => {
+    return (value * 100) / total
+  }
+
   //Model functions
 
   private openStateStat(): void {
@@ -235,6 +265,18 @@ export class MapComponent implements OnInit {
 
   private closeClaimStat(): void {
     this.childrenVisible = false
+  }
+  private getClaimImage = async url => {
+    return await this.afs.firestore.app
+      .storage()
+      .refFromURL(url)
+      .getDownloadURL()
+      .then(picture => {
+        return picture
+      })
+      .catch(function(error) {
+        console.log(error)
+      })
   }
 
   //to destroy subscriptions and prevent memory leak

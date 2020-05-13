@@ -16,7 +16,7 @@ export class PopUpService {
         claimsString +
         `
     <div class="toast-body"> 
-    Claim date : ${claim.date}
+    Claim date : ${claim.id}
     </div>
   </div>`
     })

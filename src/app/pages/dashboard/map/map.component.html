@@ -45,20 +45,20 @@
     </div>
   </div>
   <div class="row">
-    <div class="card card--withShadow  col-lg-12">
+    <div class="card"  card--withShadow  col-lg-12">
       <div class="card-header">
         <div class="utils__title">
           <strong>Claims By Status</strong>
         </div>
       </div>
       <div class="card-body">
-        <x-chartist
-        type="Pie"
-        [data]="simplePieData"
-        [options]="simplePieOptions"
-        class="height-300"
-      >
-      </x-chartist>
+        <apx-chart
+          style="height: 300"
+          [series]="chartOptions.series"
+          [plotOptions]="chartOptions.plotOptions"
+          [labels]="chartOptions.labels"
+          [chart]="chartOptions.chart"
+        ></apx-chart>
       </div>
     </div>
   </div>
@@ -72,18 +72,21 @@
     [nzWidth]="400"
   >
     <nz-list nzItemLayout="vertical">
-        <div *ngFor="let item of stateClaimsWithImg">
-          <nz-card  [nzCover]="coverTemplate"  [nzHoverable]="true" [nzActions]="[actionSetting, actionEdit, actionEllipsis]">
-            <nz-card-meta nzTitle={{item.id}}  nzDescription={{item.tags}}  [nzAvatar]="avatarTemplate"></nz-card-meta>
-          </nz-card>
-          <ng-template #avatarTemplate>
-            <nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
-          </ng-template>
-          <ng-template #coverTemplate>
-            <img alt="example" src={{item.picture}} />
-          </ng-template>
-          <nz-divider></nz-divider>
-        </div>
+      <div *ngFor="let item of stateClaims">
+        <nz-card [nzCover]="coverTemplate" [nzHoverable]="true">
+          <nz-statistic [nzValue]="item.id" nzTitle="Creation Date"></nz-statistic>
+          <nz-statistic *ngIf="item.status" nzValue="Complete" nzTitle="Status"></nz-statistic>
+          <!-- <div *ngFor="let tag of Object.values(tags)">
+            <nz-statistic [nzValue]="tag" nzTitle="Tag"></nz-statistic>
+          </div> -->
+          <nz-statistic *ngIf="!item.status" nzValue="Pending" nzTitle="Status"></nz-statistic>
+        </nz-card>
+
+        <ng-template #coverTemplate>
+          <img alt="example" src="{{ item.picture }}" />
+        </ng-template>
+        <nz-divider></nz-divider>
+      </div>
     </nz-list>
   </nz-drawer>
 </nz-drawer>

@@ -1,53 +1,51 @@
-  <div class="row">
-    <div class="col-lg-8">
-      <div class="card map-card">
-        <app-map></app-map>
-      </div>
+<div class="row">
+  <div class="col-lg-8">
+    <div *ngIf="claims" class="card map-card">
+      <app-map [claims]="claims"></app-map>
     </div>
-    <div class="col-lg-4">
-      <div class="row justify-content-md-center">
-        <div class="card">
-        <nz-input-group nzCompact >
-          <nz-date-picker></nz-date-picker>
-          <nz-date-picker></nz-date-picker>
+  </div>
+  <div class="col-lg-4">
+    <div class="row justify-content-md-center">
+      <div class="card">
+        <nz-input-group nzCompact>
+          <nz-range-picker
+            [(ngModel)]="dateRange"
+            (ngModelChange)="onChange($event)"
+          ></nz-range-picker>
         </nz-input-group>
       </div>
-      </div>
-      <div class="row">
-        <div class="card col-lg-12  card--withShadow  " >
-          <div class="card-body">
-            <div class="col-xl-12 col-lg-6 col-sm-12">
-              <span class="pull-left font-size-16">
-                <strong>Total Claims: </strong>
-              </span>
-              <span class="pull-right font-size-18">
-                <strong> {{ totalClaims }}</strong>
-              </span>
-            </div>
+    </div>
+    <div class="row">
+      <div class="card col-lg-12  card--withShadow  ">
+        <div class="card-body">
+          <div class="col-xl-12 col-lg-6 col-sm-12">
+            <span class="pull-left font-size-16">
+              <strong>Total Claims: </strong>
+            </span>
+            <span class="pull-right font-size-18">
+              <strong> {{ totalClaims }}</strong>
+            </span>
           </div>
         </div>
       </div>
-      <div class="row">
-        
-        <div class="card card--withShadow  col-lg-12">
-          <div class="card-header">
-            <div class="utils__title">
-              <strong>Claims By Month</strong>
-            </div>
+    </div>
+    <div class="row">
+      <div class="card card--withShadow  col-lg-12">
+        <div class="card-header">
+          <div class="utils__title">
+            <strong>Claims By Month</strong>
           </div>
-          <div class="card-body">
-            <x-chartist
-              class="ct-chart height-300"
-              [data]="monthChartData"
-              [type]="type"
-              [options]="monthChartOptions"
-            >
-            </x-chartist>
-          </div>
+        </div>
+        <div class="card-body">
+          <x-chartist
+            class="ct-chart height-300"
+            [data]="monthChartData"
+            [type]="type"
+            [options]="monthChartOptions"
+          >
+          </x-chartist>
         </div>
       </div>
     </div>
   </div>
-
-
-
+</div>

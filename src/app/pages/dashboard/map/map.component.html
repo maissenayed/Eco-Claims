@@ -44,21 +44,22 @@
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="card"  card--withShadow  col-lg-12">
+  <div class="row statusStyle">
+    <div class="card" card--withShadow col-lg-12>
       <div class="card-header">
         <div class="utils__title">
           <strong>Claims By Status</strong>
         </div>
       </div>
-      <div class="card-body">
-        <apx-chart
-          style="height: 300"
-          [series]="chartOptions.series"
-          [plotOptions]="chartOptions.plotOptions"
-          [labels]="chartOptions.labels"
-          [chart]="chartOptions.chart"
-        ></apx-chart>
+      <div class="card-body ">
+        <div class="statusStyle">
+          <apx-chart
+            [series]="chartOptions.series"
+            [plotOptions]="chartOptions.plotOptions"
+            [labels]="chartOptions.labels"
+            [chart]="chartOptions.chart"
+          ></apx-chart>
+        </div>
       </div>
     </div>
   </div>

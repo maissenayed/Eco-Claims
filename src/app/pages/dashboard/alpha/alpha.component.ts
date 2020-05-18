@@ -3,7 +3,7 @@ import ChartistTooltip from 'chartist-plugin-tooltips-updated'
 import { ClaimsService } from 'src/app/services/firebaseServices/claims.service'
 import { ChartEvent, ChartType } from 'ng-chartist'
 import * as moment from 'moment'
-import { IBarChartOptions, IChartistAnimationOptions, IChartistData } from 'chartist'
+import { IBarChartOptions, IChartistData } from 'chartist'
 import { claimByMonthType } from './type'
 import { Subject } from 'rxjs'
 import { takeUntil } from 'rxjs/operators'
@@ -41,25 +41,56 @@ export class DashboardAlphaComponent implements OnInit, OnDestroy {
       }),
     ],
   }
-  items: Array<any>
+  claims: Array<any>
   constructor(public firebaseService: ClaimsService) {}
   ngOnInit() {
     this.firebaseService
       .getClaims()
       .pipe(takeUntil(this.destroyed$))
       .subscribe(claims => {
-        this.items = claims
+        this.claims = claims
+        this.claims = this.claims.reduce((currentArry, elementOfTheArry, Index) => {
+          currentArry.push(elementOfTheArry.payload.val())
+          return currentArry // *********  Important ******
+        }, [])
         this.labels.forEach(e => this.claimMonth.push({ meta: e, value: 0 }))
-        this.items.map(item => {
-          this.claimMonth[moment.unix(item.payload.val().id).month()].value += 1
+        this.claims.map(item => {
+          this.claimMonth[moment.unix(item.id).month()].value += 1
         })
         this.monthChartData = { labels: this.labels, series: [this.claimMonth] }
-        this.totalClaims = this.items.length
+        this.totalClaims = this.claims.length
       })
   }
+  onChange = (result: Date[]) => {
+    this.claimMonth = []
+    this.firebaseService
+      .getClaims()
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(claims => {
+        this.claims = claims
+        this.claims = this.claims.reduce((currentArry, elementOfTheArry, Index) => {
+          currentArry.push(elementOfTheArry.payload.val())
+          return currentArry // *********  Important ******
+        }, [])
+        this.labels.forEach(e => this.claimMonth.push({ meta: e, value: 0 }))
+        this.claims = this.claims.filter(
+          (claim: any) =>
+            moment.unix(claim.id).format() >= moment(result[0]).format() &&
+            moment.unix(claim.id).format() <= moment(result[1]).format(),
+        )
+        if (this.claims.length > 0)
+          this.claims.map(item => {
+            this.claimMonth[moment.unix(item.id).month()].value += 1
+          })
 
+        this.monthChartData = { labels: this.labels, series: [this.claimMonth] }
+        this.totalClaims = this.claims.length
+      })
+  }
   ngOnDestroy() {
     this.destroyed$.next()
     this.destroyed$.complete()
   }
+
+  getClaims = () => {}
 }

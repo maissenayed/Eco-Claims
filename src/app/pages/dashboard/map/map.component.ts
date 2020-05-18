@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core'
+import { Component, OnInit, AfterViewInit, ViewChild, Input } from '@angular/core'
 import * as L from 'leaflet'
 import { AngularFireStorage } from '@angular/fire/storage'
 import { ShapeService } from 'src/app/services/shape.service'
@@ -39,6 +39,7 @@ export type ChartOptions = {
 })
 export class MapComponent implements OnInit {
   @ViewChild('chart', { static: false }) chart: ChartComponent
+  @Input() claims: Array<any>
   public chartOptions = {
     series: [0],
     labels: ['pending', 'Fixed'],
@@ -116,32 +117,22 @@ export class MapComponent implements OnInit {
   ) {}
   private destroyed$ = new Subject()
   public imgSrc: any // Change imgSrc type
-  claims: Array<any> = []
-  ngOnInit() {
-    this.claimService
-      .getClaims()
-      .pipe(
-        switchMap(claims =>
-          this.shapeService.getShapes().pipe(map(shapes => ({ claims, shapes }))),
-        ),
-      )
-      .subscribe(results => {
-        this.initMap()
-        //reduce firebase paylod to just the objects
-        this.claims = results.claims.reduce((currentArry, elementOfTheArry, Index) => {
-          currentArry.push(elementOfTheArry.payload.val())
-          return currentArry // *********  Important ******
-        }, [])
-        this.totalClaims = this.claims.length
-        this.mauritaniaShape = results.shapes
-        this.initStatesLayer(this.claims)
 
-        this.claims.map(item => {
-          L.marker([item.latitude, item.longitude], this.icon)
-            .on('click', this.markerOnClick)
-            .addTo(this.map)
-        })
+  ngOnInit() {
+    this.shapeService.getShapes().subscribe(shapes => {
+      this.initMap()
+      //reduce firebase paylod to just the objects
+      console.log(this.claims, 'claims')
+      this.totalClaims = this.claims.length
+      this.mauritaniaShape = shapes
+      this.initStatesLayer()
+
+      this.claims.map(item => {
+        L.marker([item.latitude, item.longitude], this.icon)
+          .on('click', this.markerOnClick)
+          .addTo(this.map)
       })
+    })
   }
 
   private initMap(): void {
@@ -156,7 +147,7 @@ export class MapComponent implements OnInit {
 
     tiles.addTo(this.map)
   }
-  private initStatesLayer = (claims: Array<any>) => {
+  private initStatesLayer = () => {
     const stateLayer = L.geoJSON(this.mauritaniaShape, {
       style: feature => ({
         weight: 3,
@@ -174,6 +165,7 @@ export class MapComponent implements OnInit {
           })
           .bindPopup(
             e => {
+              console.log(this.claims)
               //reset state arrays
               this.stateClaims = []
               this.monthChartData = []
@@ -183,16 +175,26 @@ export class MapComponent implements OnInit {
               let popUpClaims = []
               this.monthChartLabels.forEach(e => claimMonth.push({ meta: e, value: 0 }))
 
-              claims.map(item => {
+              this.claims.map(item => {
                 if (item.state === e.feature.properties.State) {
                   claimMonth[moment.unix(item.id).month()].value += 1
                   if (!item.status) pending += 1
                   if (item.status) complete += 1
-                  item.id = moment.unix(item.id).format('L')
-                  popUpClaims.push(item)
+
+                  const popUpClaim = {
+                    date: item.date,
+                    id: moment.unix(item.id).format('L'),
+                    latitude: item.latitude,
+                    longitude: item.longitude,
+                    picture: item.picture,
+                    state: item.state,
+                    status: item.status,
+                    tags: item.tags,
+                  }
+                  popUpClaims.push(popUpClaim)
                 }
               })
-              const posts = claims.map(async item => {
+              const posts = this.claims.map(async item => {
                 if (item.state === e.feature.properties.State) {
                   item.picture = await this.getClaimImage(item.picture)
                   this.stateClaims.push(item)
@@ -203,6 +205,7 @@ export class MapComponent implements OnInit {
                 this.monthChartData = { labels: this.monthChartLabels, series: [claimMonth] }
                 this.totalStatClaims = this.stateClaims.length
                 this.chartOptions.series = [this.valueToPercent(pending, pending + complete)]
+
                 this.openStateStat()
               })
               return this.popupService.makeCapitalPopup(e.feature.properties, popUpClaims)
@@ -246,8 +249,9 @@ export class MapComponent implements OnInit {
     this.map.fitBounds(layerbound)
   }
 
-  valueToPercent = (value, total) => {
-    return (value * 100) / total
+  valueToPercent = (value: number, total: number) => {
+    if (total > 0) return (value * 100) / total
+    return 0
   }
 
   //Model functions

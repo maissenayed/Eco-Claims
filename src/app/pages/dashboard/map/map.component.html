@@ -77,9 +77,6 @@
         <nz-card [nzCover]="coverTemplate" [nzHoverable]="true">
           <nz-statistic [nzValue]="item.id" nzTitle="Creation Date"></nz-statistic>
           <nz-statistic *ngIf="item.status" nzValue="Complete" nzTitle="Status"></nz-statistic>
-          <!-- <div *ngFor="let tag of Object.values(tags)">
-            <nz-statistic [nzValue]="tag" nzTitle="Tag"></nz-statistic>
-          </div> -->
           <nz-statistic *ngIf="!item.status" nzValue="Pending" nzTitle="Status"></nz-statistic>
         </nz-card>
 

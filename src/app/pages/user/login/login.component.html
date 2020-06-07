@@ -7,12 +7,18 @@
             <strong>Please log in</strong>
           </h4>
           <br />
-          <form nz-form [nzLayout]="'vertical'" [formGroup]="form" (ngSubmit)="submitForm()" role="form">
+          <form
+            nz-form
+            [nzLayout]="'vertical'"
+            [formGroup]="form"
+            (ngSubmit)="submitForm()"
+            role="form"
+          >
             <nz-form-item>
               <nz-form-label nzFor="email">Email</nz-form-label>
               <nz-form-control>
                 <nz-input-group [nzPrefix]="prefixUser">
-                  <input nz-input id="email" formControlName="email">
+                  <input nz-input id="email" formControlName="email" />
                 </nz-input-group>
                 <nz-form-explain *ngIf="email.dirty && email.errors">
                   Please input your e-mail address
@@ -23,7 +29,7 @@
               <nz-form-label nzFor="password">Password</nz-form-label>
               <nz-form-control>
                 <nz-input-group [nzPrefix]="prefixLock">
-                  <input type="password" nz-input id="password" formControlName="password">
+                  <input type="password" nz-input id="password" formControlName="password" />
                 </nz-input-group>
                 <nz-form-explain *ngIf="password.dirty && password.errors">
                   Please input your e-mail address
@@ -34,12 +40,24 @@
               <label nz-checkbox>
                 Remember me
               </label>
-              <a href routerLink="/user/forgot" class="login-form-forgot pull-right utils__link--blue utils__link--underlined">Forgot password</a>
+              <a
+                href
+                routerLink="/user/forgot"
+                class="login-form-forgot pull-right utils__link--blue utils__link--underlined"
+                >Forgot password</a
+              >
             </div>
+
             <div class="form-actions">
               <button nz-button nzType="primary" class="width-150 mr-3">
                 Sign in
               </button>
+              <span class="register-link">
+                <a href routerLink="/user/register" class="text-primary utils__link--underlined">
+                  Register
+                </a>
+                if you don&#39;t have account
+              </span>
             </div>
           </form>
         </div>

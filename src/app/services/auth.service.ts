@@ -40,6 +40,7 @@ export class AuthService {
     try {
       await this.afAuth.auth.signInWithEmailAndPassword(email, password)
       this.afAuth.authState.subscribe(user => {
+        console.log(user)
         if (user) {
           this.userData = user
           localStorage.setItem('user', JSON.stringify(this.userData))
@@ -47,6 +48,25 @@ export class AuthService {
           this.notification.success(
             'Logged In',
             'You have successfully logged in to Eco-Claim Dashboard',
+          )
+        }
+      })
+    } catch (error) {
+      this.notification.error(error.code, error.message)
+    }
+  }
+  async SignUp(email: string, password: string) {
+    try {
+      await this.afAuth.auth.createUserWithEmailAndPassword(email, password)
+      this.afAuth.authState.subscribe(user => {
+        console.log(user)
+        if (user) {
+          this.userData = user
+          localStorage.setItem('user', JSON.stringify(this.userData))
+          //this.router.navigate(['dashboard/alpha'])
+          this.notification.success(
+            'Sign up success',
+            'You have successfully registered in to Eco-Claim App',
           )
         }
       })

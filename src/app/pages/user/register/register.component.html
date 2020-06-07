@@ -1,0 +1,60 @@
+<section>
+  <div class="content">
+    <div class="form">
+      <p class="formTitle">Please register</p>
+      <form
+        nz-form
+        [nzLayout]="'vertical'"
+        [formGroup]="form"
+        (ngSubmit)="submitForm()"
+        role="form"
+      >
+        <nz-form-item>
+          <nz-form-control>
+            <nz-input-group [nzPrefix]="prefixUser">
+              <input id="email" formControlName="email" nz-input placeholder="Email " />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control>
+            <nz-input-group [nzPrefix]="prefixLock">
+              <input
+                type="password"
+                nz-input
+                id="password"
+                formControlName="password"
+                placeholder="Input your password"
+              />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control>
+            <nz-input-group [nzPrefix]="prefixLock">
+              <input
+                type="password"
+                formControlName="confirm"
+                nz-input
+                placeholder="Confirm your password"
+                id="confirm"
+              />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <div class="form-actions">
+          <button nz-button nzType="primary" class="login-form-button mr-3">
+            Sign Up
+          </button>
+          <span class="register-link">
+            <a href routerLink="/user/login" class="text-primary utils__link--underlined">
+              Sign In
+            </a>
+          </span>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+<ng-template #prefixUser><i nz-icon type="user"></i></ng-template>
+<ng-template #prefixLock><i nz-icon type="lock"></i></ng-template>

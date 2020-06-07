@@ -14,8 +14,9 @@ import { NotFoundComponent } from 'src/app/pages/404.component'
 // user
 import { LoginComponent } from 'src/app/pages/user/login/login.component'
 import { ForgotComponent } from 'src/app/pages/user/forgot/forgot.component'
+import { PagesRegisterComponent } from './pages/user/register/register.component'
 
-const COMPONENTS = [LoginComponent, ForgotComponent, NotFoundComponent]
+const COMPONENTS = [LoginComponent, ForgotComponent, NotFoundComponent, PagesRegisterComponent]
 
 const routes: Routes = [
   {
@@ -29,6 +30,11 @@ const routes: Routes = [
     children: [
       { path: 'login', component: LoginComponent, data: { title: 'Login' } },
       { path: 'forgot', component: ForgotComponent, data: { title: 'Restore Password' } },
+      {
+        path: 'register',
+        component: PagesRegisterComponent,
+        data: { title: 'Pages Register' },
+      },
     ],
   },
   {
@@ -59,4 +65,4 @@ const routes: Routes = [
   declarations: [...COMPONENTS],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

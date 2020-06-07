@@ -150,10 +150,10 @@ export class MapComponent implements OnInit {
   private initStatesLayer = () => {
     const stateLayer = L.geoJSON(this.mauritaniaShape, {
       style: feature => ({
-        weight: 3,
+        weight: 0,
         opacity: 0.5,
         color: '#142850',
-        fillOpacity: 0.8,
+        fillOpacity: 0.0,
         fillColor: '#27496d',
       }),
       onEachFeature: (feature, layer) =>
@@ -230,10 +230,10 @@ export class MapComponent implements OnInit {
   private resetFeature(e) {
     const layer = e.target
     layer.setStyle({
-      weight: 3,
+      weight: 0,
       opacity: 0.5,
       color: '#142850',
-      fillOpacity: 0.8,
+      fillOpacity: 0.0,
       fillColor: '#27496d',
     })
   }
@@ -245,7 +245,16 @@ export class MapComponent implements OnInit {
     this.map.fitBounds(markerBounds)
   }
   private layerOnClick = e => {
-    let layerbound = e.target.getBounds()
+    const layer = e.target
+    layer.setStyle({
+      weight: 0,
+      opacity: 0,
+      color: '#27496d',
+      fillOpacity: 0,
+      fillColor: '#27496d',
+    })
+    let layerbound = layer.getBounds()
+
     this.map.fitBounds(layerbound)
   }
 

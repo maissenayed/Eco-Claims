@@ -76,8 +76,18 @@
       <div *ngFor="let item of stateClaims">
         <nz-card [nzCover]="coverTemplate" [nzHoverable]="true">
           <nz-statistic [nzValue]="item.id" nzTitle="Creation Date"></nz-statistic>
-          <nz-statistic *ngIf="item.status" nzValue="Complete" nzTitle="Status"></nz-statistic>
-          <nz-statistic *ngIf="!item.status" nzValue="Pending" nzTitle="Status"></nz-statistic>
+          <nz-statistic
+            *ngIf="item.status"
+            nzValue="Complete"
+            nzTitle="Status"
+            [nzValueStyle]="{ color: '#3F8600' }"
+          ></nz-statistic>
+          <nz-statistic
+            *ngIf="!item.status"
+            nzValue="Pending"
+            nzTitle="Status"
+            [nzValueStyle]="{ color: '#CF1322' }"
+          ></nz-statistic>
         </nz-card>
 
         <ng-template #coverTemplate>

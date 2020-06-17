@@ -109,6 +109,15 @@ export class MapComponent implements OnInit {
       shadowUrl: 'assets/images/marker-shadow.png',
     }),
   }
+  private PendingIcon = {
+    icon: L.icon({
+      iconSize: [25, 41],
+      iconAnchor: [13, 0],
+      // specify the path here
+      iconUrl: 'assets/images/redlogo.png',
+      shadowUrl: 'assets/images/marker-shadow.png',
+    }),
+  }
   constructor(
     private shapeService: ShapeService,
     private popupService: PopUpService,
@@ -128,9 +137,13 @@ export class MapComponent implements OnInit {
       this.initStatesLayer()
 
       this.claims.map(item => {
-        L.marker([item.latitude, item.longitude], this.icon)
-          .on('click', this.markerOnClick)
-          .addTo(this.map)
+        item.status
+          ? L.marker([item.latitude, item.longitude], this.icon)
+              .on('click', this.markerOnClick)
+              .addTo(this.map)
+          : L.marker([item.latitude, item.longitude], this.PendingIcon)
+              .on('click', this.markerOnClick)
+              .addTo(this.map)
       })
     })
   }
